@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
+<head>
     <meta charset="UTF-8">
     <link rel="icon" href="/ZheYi.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>毓秀语音系统</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <style>
+        canvas {
+            z-index: 114514;
+        }
+    </style>
+</head>
+<body>
+<div id="heatmapContainerWrapper">
+    <div id="heatmapContainer">
+        <div id="app"></div>
+    </div>
+</div>
+<script src="./heatmap.js"></script>
+<script type="module" src="/src/main.ts"></script>
+<script>
+  window.onload = function () {
+
+    // create a heatmap instance
+    const heatmap = h337.create({
+      container: document.getElementById('heatmapContainer'),
+      maxOpacity: .9,
+      radius: 50,
+      blur: .90,
+      // backgroundColor with alpha so you can see through it
+      // backgroundColor: 'rgba(0, 0, 58, 0.96)'
+    });
+    heatmap.setData({
+      max: 10,
+      data: []
+    })
+    const heatmapContainer = document.getElementById('heatmapContainerWrapper');
+    heatmapContainer.onclick = function (e) {
+      const x = e.layerX;
+      const y = e.layerY;
+      heatmap.addData({x: x, y: y, value: 1});
+      heatmap.repaint();
+
+      console.log(heatmap.getData())
+    };
+
+  };
+</script>
+</body>
 </html>
